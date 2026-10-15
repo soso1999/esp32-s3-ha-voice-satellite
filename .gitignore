@@ -1,0 +1,7 @@
+# Local credentials and generated firmware
+**/secrets.yaml
+**/.esphome/
+**/.pioenvs/
+**/.piolibdeps/
+.venv/
+.DS_Store

@@ -1,0 +1,125 @@
+{
+  "version": "0.4",
+  "export": "OpenSCAD 2025.03.25 WebAssembly-node, Manifold; direkt aus smart_speaker_v04.scad",
+  "checks": {
+    "gehaeuse_geschlossen": true,
+    "gehaeuse_ausrichtung": true,
+    "gehaeuse_ein_koerper": true,
+    "gehaeuse_z_min_0": true,
+    "frontgitter_geschlossen": true,
+    "frontgitter_ausrichtung": true,
+    "frontgitter_ein_koerper": true,
+    "frontgitter_z_min_0": true,
+    "deckel_kollisionsfrei": true,
+    "pcb_standoff_12_5_8.5_13.5": true,
+    "pcb_standoff_12_5_8.5_58.5": true,
+    "pcb_standoff_12_5_73.5_13.5": true,
+    "pcb_standoff_12_5_73.5_58.5": true,
+    "lautsprecher_post_7_22.75": true,
+    "lautsprecher_durchgang_22.75": true,
+    "lautsprecher_post_7_59.25": true,
+    "lautsprecher_durchgang_59.25": true,
+    "usb_urspruengliche_seite_offen": true,
+    "usb_gegenueberliegende_wand_geschlossen": true,
+    "usb_alte_laengslage_geschlossen": true,
+    "kabelkerbe_11.5": true,
+    "kabelkerbe_70.5": true,
+    "mikrofon_oeffnung_0": true,
+    "mikrofon_oeffnung_1": true,
+    "mikrofon_oeffnung_2": true,
+    "mikrofon_oeffnung_3": true,
+    "mikrofon_oeffnung_4": true,
+    "mikrofon_oeffnung_5": true,
+    "mikrofon_oeffnung_6": true,
+    "mikrofon_oeffnung_7": true,
+    "mikrofon_oeffnung_8": true,
+    "mikrofon_oeffnung_9": true,
+    "mikrofon_oeffnung_10": true,
+    "mikrofon_oeffnung_11": true,
+    "antenne_offen": true,
+    "usb_unterkante_13_4": true,
+    "usb_oberkante_28_4": true,
+    "frontgitter_identisch_v03": true,
+    "frontabstand_1_7_nominal": true,
+    "usb_laengs_start_15_5": true,
+    "usb_laengs_ende_40_5": true,
+    "aenderung_nur_usb_fenster": true
+  },
+  "dimensions_mm": {
+    "assembled": [
+      82,
+      110,
+      35
+    ],
+    "pcb_standoff": 12.5,
+    "speaker_standoff": 7,
+    "mic_center_front": [
+      47,
+      48
+    ],
+    "speaker_holes_front": [
+      [
+        22.75,
+        85.4
+      ],
+      [
+        59.25,
+        85.4
+      ]
+    ],
+    "pcb_top_max_z": 30.9,
+    "front_inside_z": 32.6,
+    "highest_component_gap_nominal": 1.7,
+    "pin_gap_nominal": 7.5,
+    "usb_side": "left_original_photo",
+    "usb_center_y": 28,
+    "usb_y_range": [
+      15.5,
+      40.5
+    ],
+    "usb_z_range": [
+      13.4,
+      28.4
+    ],
+    "usb_shift_toward_outer_edge": 16
+  },
+  "meshes": {
+    "gehaeuse": {
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          82.0,
+          110.0,
+          32.6
+        ]
+      ],
+      "volume_mm3": 57186.700161706074,
+      "triangles": 4272
+    },
+    "frontgitter": {
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          82.0,
+          110.0,
+          9.4
+        ]
+      ],
+      "volume_mm3": 17894.936209744974,
+      "triangles": 4040
+    }
+  },
+  "limits": [
+    "Keine erneute physische Passformpruefung",
+    "Mikrofonposition aus vorhandenen Massen und Fotos zugeordnet, keine neue Messung",
+    "Tiefe USB-Steckergehaeuse unbekannt"
+  ]
+}
