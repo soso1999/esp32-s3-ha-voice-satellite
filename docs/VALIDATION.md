@@ -6,7 +6,6 @@
 - Updated README title, introduction, setup links, build notes and Support section.
 - Added `.github/FUNDING.yml` for `https://buymeacoffee.com/soso1999`.
 - Added `esphome/voice-satellite-secure.yaml`, documented its selection and local secrets, and added upload guidance. The original `voice-satellite.yaml` is byte-identical to the basis commit.
-- No license selected; repository description/topics were only suggested, not changed remotely.
 
 ## Checks rerun for this update
 
