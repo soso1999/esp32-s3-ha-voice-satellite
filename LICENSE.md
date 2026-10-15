@@ -1,13 +1,26 @@
-# License status and third-party notices
+# Licensing
 
-No explicit open-source license choice was found in the source project. This package therefore does **not** claim an MIT, Creative Commons or open-hardware grant. Rights in original documentation, photos, configuration and CAD remain with their respective rights holders unless and until they grant a license. Publishing this repository does not by itself authorize redistribution or modification.
+This repository uses separate licenses for software and non-software content.
 
-Before an open-source release, the project owner should select suitable terms for configuration/software, documentation/photos and CAD/hardware, confirm ownership/permissions, and add the complete applicable license texts. Do not interpret this status notice as a selected license.
+## Software and configuration
 
-## External projects
+Unless otherwise stated, all source code, ESPHome YAML files, scripts, and other software-related files in this repository are licensed under the MIT License.
 
-- [ESPHome](https://github.com/esphome/esphome): firmware framework; its upstream license applies to its code and dependencies.
-- [microWakeWord models](https://github.com/esphome/micro-wake-word-models) and the [Stop model release](https://github.com/kahrendt/microWakeWord/releases/tag/stop): downloaded by ESPHome, not included here; inspect upstream manifests/licenses before redistribution.
-- [Home Assistant Core](https://github.com/home-assistant/core), [llama.cpp](https://github.com/ggml-org/llama.cpp), Qwen model weights, LM Studio and Home Assistant Cloud have their own licenses or service terms; none are relicensed by this repository.
+See [`LICENSE-MIT`](LICENSE-MIT).
 
-Hardware part names and trademarks identify compatible components and do not imply endorsement. No warranty, certification or measured electrical/acoustic performance is asserted by this documentation.
+SPDX-License-Identifier: MIT
+
+## Hardware designs, documentation, and media
+
+Unless otherwise stated, CAD files, 3D models, STL/STEP files, schematics, diagrams, documentation, photographs, and other non-software content in this repository are licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0).
+
+See [`LICENSE-CC-BY-SA-4.0`](LICENSE-CC-BY-SA-4.0).
+
+Canonical license:
+https://creativecommons.org/licenses/by-sa/4.0/
+
+## Attribution
+
+Copyright (c) 2026 soso1999
+
+If a file contains its own license notice, that file-specific notice takes precedence.
