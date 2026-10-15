@@ -4,7 +4,7 @@ The owner approved the public GitHub repository `soso1999/esp32-s3-ha-voice-sate
 
 Repository: https://github.com/soso1999/esp32-s3-ha-voice-satellite
 
-The license status in `LICENSE.md` remains pending an explicit license selection. Public visibility does not itself grant an open-source license. Original build photographs are included with the owner’s authorization.
+The repository now uses explicit dual licensing: software, ESPHome YAML files and scripts are licensed under the MIT License; CAD files, 3D models, schematics, documentation, photographs and other non-software content are licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0). See `LICENSE.md`, `LICENSE-MIT` and `LICENSE-CC-BY-SA-4.0`.
 
 Do not commit populated secrets or private model/server logs. Revalidate ESPHome configuration after firmware changes, and update documentation and checksums when replacing artifacts. `docs/MANIFEST.sha256` records the packaged project files except itself.
 
