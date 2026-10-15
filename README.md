@@ -1,4 +1,8 @@
-# ESP32-S3 Home Assistant Smart Speaker
+# ESP32-S3 Home Assistant Voice Satellite
+
+**DIY smart speaker with local wake-word detection, ESPHome and a 3D-printed enclosure.**
+
+[![Buy me a coffee](https://img.shields.io/badge/Buy_me_a_coffee-Support_this_project-FFDD00?logo=buymeacoffee&logoColor=000000)](https://buymeacoffee.com/soso1999)
 
 A completed DIY voice satellite built on perfboard, in a custom 3D-printed enclosure. Local **Okay Nabu** detection and a local **Stop** wake word run on the ESP32-S3. Home Assistant Cloud provides speech-to-text and text-to-speech; a local Qwen model, connected through Home Assistant's llama.cpp integration, handles conversation and permitted device actions.
 
@@ -20,10 +24,10 @@ A completed DIY voice satellite built on perfboard, in a custom 3D-printed enclo
 ## Start here
 
 1. Check [BOM](hardware/BOM.md) and [wiring](hardware/WIRING.md), including your board's flash/PSRAM variant.
-2. Follow [ESPHome setup](esphome/README.md). The supplied YAML is the last complete Stop-enabled configuration recovered from the project chat.
+2. Follow [ESPHome setup](esphome/README.md). Choose the unchanged original firmware or the separate example with API encryption and an OTA password.
 3. Follow [Home Assistant setup](home-assistant/SETUP.md) to select the Cloud STT/TTS and Qwen pipeline on the satellite.
-4. Use [CAD and printing](cad/README.md) for the genuine final files and documented coordinate corrections.
-5. Read [validation and provenance](docs/VALIDATION.md) and [license status](LICENSE.md).
+4. Use [CAD and printing](cad/README.md) for the v0.4 enclosure, front grille and printing notes.
+5. Check [troubleshooting](docs/TROUBLESHOOTING.md) if needed and review the [license status](LICENSE.md) before reusing the project.
 
 ## How it works
 
@@ -40,22 +44,28 @@ During announcements longer than roughly one second, the firmware switches to th
 
 This is a hybrid local/cloud setup: Qwen runs on a separate computer, not on the ESP32. Spoken requests use cloud STT/TTS. A Home Assistant Cloud subscription and internet access are needed for that pipeline.
 
-## Build status and limits
+## Building and using your satellite
 
-The owner reported the assembled speaker working, including Stop at moderate playback volume. There is no dedicated acoustic echo-cancellation hardware; loud playback can mask Stop. Start tests at 25–30% volume, even though the recovered firmware starts at 70%. The latest v0.4 enclosure files were supplied in the source chat, but the photos alone do not establish which CAD revision was printed.
+The speaker has been assembled and used with the voice pipeline described above. For your own build, check the board variant, wiring and speaker ratings before flashing. Start voice tests at 25–30% playback volume: loud playback can mask the Stop wake word, and there is no dedicated acoustic echo-cancellation hardware. The original firmware starts at 70% volume.
 
-This repository packages recovered project artifacts. It does not claim a new on-device test or repeat the earlier CAD export verification. See the validation record for checks performed during packaging.
+The v0.4 enclosure source and separate printable parts are included alongside build photos. Detailed file history, checks and known limits are recorded in [validation](docs/VALIDATION.md) and [provenance](docs/PROVENANCE.md).
 
 ## Repository map
 
 | Directory | Contents |
 |---|---|
 | `hardware/` | BOM, pin mapping, measured dimensions |
-| `esphome/` | Recovered firmware, secrets example, installation guide |
+| `esphome/` | Original firmware, optional security example, secrets template, installation guide |
 | `home-assistant/` | Cloud voice pipeline, local model and tool setup |
 | `cad/` | v0.4 OpenSCAD, STL, previews, original notes and validation |
 | `images/` | Four original final-build photos and attribution |
 | `docs/` | Provenance, troubleshooting, validation, publishing |
+
+## Support ☕
+
+If this project helps you build your own Home Assistant voice satellite, you can support my work with a coffee. Thank you!
+
+**[Buy me a coffee](https://buymeacoffee.com/soso1999)**
 
 ## License
 

@@ -1,4 +1,26 @@
-# Validation record — 2026-10-15
+# Upload package update — 2026-10-15
+
+## Basis and changes
+
+- Downloaded the current public repository at commit `af18512102c8f4224428d42209ee7ce1866d6e21`.
+- Updated README title, introduction, setup links, build notes and Support section.
+- Added `.github/FUNDING.yml` for `https://buymeacoffee.com/soso1999`.
+- Added `esphome/voice-satellite-secure.yaml`, documented its selection and local secrets, and added upload guidance. The original `voice-satellite.yaml` is byte-identical to the basis commit.
+- No license selected; repository description/topics were only suggested, not changed remotely.
+
+## Checks rerun for this update
+
+- Optional example: `esphome config` with ESPHome 2026.9.1 succeeded using locally generated temporary credentials outside the package and the original remote model URLs. ESPHome warns that encrypted OTA is preferable to password OTA when API encryption is configured; this is explained in the setup guide. No firmware compile or hardware test was performed.
+- Optional example compared to the original: only two leading explanatory comments, `api.encryption.key` and `ota.password` were added. Audio, pins, wake-word models and automations are unchanged.
+- All original files remain included. Every file under `cad/` and `images/`, and the original firmware, compared byte for byte against the basis commit.
+- All local Markdown targets checked, checksum manifest regenerated and checked, ZIP CRC integrity and extracted file contents checked.
+- No Git history, local secrets, build caches or validation credentials included in the ZIP.
+
+The record below describes earlier checks; those earlier firmware/CAD checks were not rerun except where explicitly listed above.
+
+---
+
+# Original packaging validation record — 2026-10-15
 
 ## Packaging checks
 
