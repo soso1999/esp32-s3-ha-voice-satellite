@@ -3,15 +3,20 @@
 **DIY smart speaker with local wake-word detection, ESPHome and a 3D-printed enclosure.**
 
 [![Buy me a coffee](https://img.shields.io/badge/Buy_me_a_coffee-Support_this_project-FFDD00?logo=buymeacoffee&logoColor=000000)](https://buymeacoffee.com/soso1999)
+[![Software License: MIT](https://img.shields.io/badge/Software-MIT-blue.svg)](LICENSE-MIT)
+[![Hardware & Docs: CC BY-SA 4.0](https://img.shields.io/badge/Hardware%20%26%20Docs-CC%20BY--SA%204.0-lightgrey.svg)](LICENSE-CC-BY-SA-4.0)
 
 A completed DIY voice satellite built on perfboard, in a custom 3D-printed enclosure. Local **Okay Nabu** detection and a local **Stop** wake word run on the ESP32-S3. Home Assistant Cloud provides speech-to-text and text-to-speech; a local Qwen model, connected through Home Assistant's llama.cpp integration, handles conversation and permitted device actions.
 
 **Deutsch:** Fertig aufgebauter ESP32-S3-Sprachsatellit mit INMP441, MAX98357A und gedrucktem Gehäuse. Wakewords und Qwen laufen lokal; STT/TTS nutzen Home Assistant Cloud. Die Originalfotos, finale v0.4-CAD-Quelle und beide Druckteile sind enthalten.
 
-![Completed build, original photo 1](images/build-01.jpg)
-![Completed build, original photo 2](images/build-02.jpeg)
-![Completed build, original photo 3](images/build-03.jpg)
-![Completed build, original photo 4](images/build-04.jpg)
+<p align="center">
+  <img src="images/build-01.jpg" alt="Completed ESP32-S3 Home Assistant voice satellite" width="650">
+</p>
+
+<p align="center">
+  <a href="images/README.md">View all build photos →</a>
+</p>
 
 ## Features
 
@@ -27,7 +32,7 @@ A completed DIY voice satellite built on perfboard, in a custom 3D-printed enclo
 2. Follow [ESPHome setup](esphome/README.md). Choose the unchanged original firmware or the separate example with API encryption and an OTA password.
 3. Follow [Home Assistant setup](home-assistant/SETUP.md) to select the Cloud STT/TTS and Qwen pipeline on the satellite.
 4. Use [CAD and printing](cad/README.md) for the v0.4 enclosure, front grille and printing notes.
-5. Check [troubleshooting](docs/TROUBLESHOOTING.md) if needed and review the [license status](LICENSE.md) before reusing the project.
+5. Check [troubleshooting](docs/TROUBLESHOOTING.md) if needed and review the [licensing information](LICENSE.md) before reusing or modifying the project.
 
 ## How it works
 
@@ -58,7 +63,7 @@ The v0.4 enclosure source and separate printable parts are included alongside bu
 | `esphome/` | Original firmware, optional security example, secrets template, installation guide |
 | `home-assistant/` | Cloud voice pipeline, local model and tool setup |
 | `cad/` | v0.4 OpenSCAD, STL, previews, original notes and validation |
-| `images/` | Four original final-build photos and attribution |
+| `images/` | Original final-build photographs and attribution |
 | `docs/` | Provenance, troubleshooting, validation, publishing |
 
 ## Support ☕
@@ -69,6 +74,11 @@ If this project helps you build your own Home Assistant voice satellite, you can
 
 ## License
 
-No license selection was recorded for the original project. [LICENSE.md](LICENSE.md) explicitly records the current rights status and third-party dependencies. A public repository alone does not grant an open-source license.
+This repository uses separate licenses for software and non-software content:
+
+- **Software, ESPHome YAML files and scripts:** [MIT License](LICENSE-MIT)
+- **CAD files, 3D models, schematics, documentation and photographs:** [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](LICENSE-CC-BY-SA-4.0)
+
+See [LICENSE.md](LICENSE.md) for the repository's complete licensing overview. File-specific license notices, where present, take precedence.
 
 Independent community project; not an official Espressif, ESPHome, Home Assistant, Nabu Casa or Qwen product.
