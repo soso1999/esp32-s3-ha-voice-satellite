@@ -26,6 +26,13 @@ A completed DIY voice satellite built on perfboard, in a custom 3D-printed enclo
 - Home Assistant Cloud STT/TTS with a local Qwen conversation agent.
 - Real OpenSCAD source and separate enclosure/front-grille STL files, v0.4, 82 × 110 × 35 mm.
 
+## Optional trained Okay Nabu model
+
+An owner-trained German model and a separate ESPHome example are included. Training
+on a MacBook Pro M2 took approximately 14 hours; the owner reports substantially
+better recognition on the built satellite. See [model files, setup, calibration and
+license status](docs/WAKE_WORD_TRAINING.md). The original examples retain the stock model.
+
 ## Start here
 
 1. Check [BOM](hardware/BOM.md) and [wiring](hardware/WIRING.md), including your board's flash/PSRAM variant.
@@ -60,7 +67,7 @@ The v0.4 enclosure source and separate printable parts are included alongside bu
 | Directory | Contents |
 |---|---|
 | `hardware/` | BOM, pin mapping, measured dimensions |
-| `esphome/` | Original firmware, optional security example, secrets template, installation guide |
+| `esphome/` | Original firmware, security and trained-model examples, model exports, secrets template, installation guide |
 | `home-assistant/` | Cloud voice pipeline, local model and tool setup |
 | `cad/` | v0.4 OpenSCAD, STL, previews, original notes and validation |
 | `images/` | Original final-build photographs and attribution |
@@ -79,6 +86,7 @@ This repository uses separate licenses for software and non-software content:
 - **Software, ESPHome YAML files and scripts:** [MIT License](LICENSE-MIT)
 - **CAD files, 3D models, schematics, documentation and photographs:** [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](LICENSE-CC-BY-SA-4.0)
 
-See [LICENSE.md](LICENSE.md) for the repository's complete licensing overview. File-specific license notices, where present, take precedence.
+See [LICENSE.md](LICENSE.md) for the repository's complete licensing overview. File-specific license notices, where present, take precedence. The trained model exports
+are excluded from these blanket grants; see [model license status](docs/WAKE_WORD_TRAINING.md#model-licensing-and-provenance).
 
 Independent community project; not an official Espressif, ESPHome, Home Assistant, Nabu Casa or Qwen product.

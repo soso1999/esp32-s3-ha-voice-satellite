@@ -24,3 +24,9 @@ https://creativecommons.org/licenses/by-sa/4.0/
 Copyright (c) 2026 soso1999
 
 If a file contains its own license notice, that file-specific notice takes precedence.
+
+## Trained model exception
+
+Files under `esphome/models/okay_nabu/` are excluded from the blanket MIT and CC BY-SA
+licenses above. Their model and training-data license status is not established.
+See [model provenance and license status](docs/WAKE_WORD_TRAINING.md#model-licensing-and-provenance).

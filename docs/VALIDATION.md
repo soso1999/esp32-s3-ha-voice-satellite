@@ -1,3 +1,16 @@
+# Trained model addition — 2026-10-25
+
+- Three owner-supplied exports copied byte for byte; hashes checked.
+- Both JSON manifests reference the included TFLite binary; TFLite identifier checked.
+- Separate trained YAML differs from the secure example only in its leading comment and Okay Nabu model path.
+- Original firmware, secure example, CAD and photographs preserved unchanged.
+- Relative documentation links and git diff whitespace checked.
+- Trainer calibration values are supplied metadata; owner-reported recognition improvement is not a new benchmark.
+- No ESPHome config validation, compilation, flash or runtime test performed for this addition.
+- See [training and model licensing](WAKE_WORD_TRAINING.md).
+
+---
+
 # Upload package update — 2026-10-15
 
 ## Basis and changes

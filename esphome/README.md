@@ -9,6 +9,8 @@ The baseline in the conversation was ESPHome 2026.9.1. The configuration selects
 - `voice-satellite.yaml`: unchanged original Stop-enabled configuration, with no API encryption or OTA password.
 - `voice-satellite-secure.yaml`: optional standalone example for new installations. Only API encryption and OTA password authentication are added; GPIOs, audio, volume, wake words and automations match the original. Use one configuration per physical device, not both.
 
+- `voice-satellite-trained.yaml`: separate secure example using the supplied local German Okay Nabu model. Copy the `models/` directory too; see [training and setup](../docs/WAKE_WORD_TRAINING.md).
+
 ## Install
 
 1. Copy this directory into a local ESPHome project or create the device in ESPHome Device Builder and paste the supplied YAML.
@@ -26,7 +28,7 @@ esphome run voice-satellite-secure.yaml
 
 The commands above use the optional security example. To keep the original baseline, substitute `voice-satellite.yaml` in all three commands. Neither example is a second device definition for the same satellite.
 
-Wake-word models are downloaded by ESPHome at build time. The Stop manifest points at an upstream release URL; model binaries are not bundled. Builds require network access and are not fully vendored/reproducible from this archive alone.
+Wake-word models are downloaded by ESPHome at build time. The Stop manifest points at an upstream release URL; the stock model binaries are not bundled. The optional trained Okay Nabu binary is bundled locally. Builds require network access and are not fully vendored/reproducible from this archive alone.
 
 ## Operation
 
