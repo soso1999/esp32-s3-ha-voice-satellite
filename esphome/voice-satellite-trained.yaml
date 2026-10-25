@@ -1,0 +1,579 @@
+# Optional owner-trained German Okay Nabu model; see ../docs/WAKE_WORD_TRAINING.md.
+# Optional example for new installations; original firmware is voice-satellite.yaml.
+# Only API encryption and OTA authentication differ. Set local secrets before use.
+esphome:
+  name: ha-voice-satellite
+  friendly_name: HA Voice Satellite
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 16MB
+  framework:
+    type: esp-idf
+
+psram:
+  mode: octal
+  speed: 80MHz
+  ignore_not_found: false
+
+
+# ============================================================
+# LOGGER
+# ============================================================
+
+logger:
+  level: INFO
+
+
+# ============================================================
+# HOME ASSISTANT API
+# ============================================================
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+
+# ============================================================
+# OTA
+# ============================================================
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+
+# ============================================================
+# WLAN
+# ============================================================
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+
+# ============================================================
+# I2S BUSSE
+# ============================================================
+
+i2s_audio:
+
+  # INMP441 Mikrofon
+  - id: i2s_mic
+    i2s_bclk_pin: GPIO9
+    i2s_lrclk_pin: GPIO10
+
+  # MAX98357A Lautsprecher
+  - id: i2s_speaker
+    i2s_bclk_pin: GPIO7
+    i2s_lrclk_pin: GPIO15
+
+
+# ============================================================
+# MIKROFON - INMP441
+#
+# VDD  -> 3.3V
+# GND  -> GND
+# SCK  -> GPIO9
+# WS   -> GPIO10
+# SD   -> GPIO11
+# L/R  -> GND
+# ============================================================
+
+microphone:
+  - platform: i2s_audio
+    id: va_mic
+    i2s_audio_id: i2s_mic
+
+    adc_type: external
+    i2s_din_pin: GPIO11
+
+    pdm: false
+    channel: left
+
+    sample_rate: 16000
+    bits_per_sample: 24bit
+
+    mclk_multiple: 384
+    use_apll: true
+
+    correct_dc_offset: false
+
+
+# ============================================================
+# LAUTSPRECHER / MIXER
+# ============================================================
+
+speaker:
+
+  # ----------------------------------------------------------
+  # Physischer MAX98357A
+  # ----------------------------------------------------------
+
+  - platform: i2s_audio
+    id: va_speaker
+    i2s_audio_id: i2s_speaker
+
+    dac_type: external
+    i2s_dout_pin: GPIO17
+
+    channel: mono
+    sample_rate: 48000
+    bits_per_sample: 16bit
+
+    buffer_duration: 500ms
+    timeout: 2s
+
+
+  # ----------------------------------------------------------
+  # Mixer für Sprache + Musik
+  # ----------------------------------------------------------
+
+  - platform: mixer
+    id: va_mixer
+    output_speaker: va_speaker
+
+    num_channels: 1
+    bits_per_sample: 16
+
+    source_speakers:
+
+      # Nabu / TTS
+      - id: va_announcement_mixer_input
+        buffer_duration: 500ms
+        timeout: 2s
+
+      # Musik / Music Assistant
+      - id: va_media_mixer_input
+        buffer_duration: 500ms
+        timeout: 2s
+
+
+  # ----------------------------------------------------------
+  # Resampler für Sprache
+  # ----------------------------------------------------------
+
+  - platform: resampler
+    id: va_announcement_resampler
+    output_speaker: va_announcement_mixer_input
+
+    sample_rate: 48000
+    bits_per_sample: 16
+    buffer_duration: 500ms
+
+
+  # ----------------------------------------------------------
+  # Resampler für Musik
+  # ----------------------------------------------------------
+
+  - platform: resampler
+    id: va_media_resampler
+    output_speaker: va_media_mixer_input
+
+    sample_rate: 48000
+    bits_per_sample: 16
+    buffer_duration: 500ms
+
+
+# ============================================================
+# WAKE-WORD-SCRIPTS
+# ============================================================
+
+script:
+
+  # ----------------------------------------------------------
+  # Normalbetrieb:
+  # Okay Nabu EIN
+  # Stop AUS
+  # ----------------------------------------------------------
+
+  - id: start_wake_word
+    mode: restart
+
+    then:
+
+      - wait_until:
+          condition:
+            and:
+
+              - not:
+                  media_player.is_announcing: voice_satellite_media_player
+
+              - not:
+                  voice_assistant.is_running:
+
+          timeout: 15s
+
+      - if:
+          condition:
+            and:
+
+              - not:
+                  media_player.is_announcing: voice_satellite_media_player
+
+              - not:
+                  voice_assistant.is_running:
+
+          then:
+
+            - micro_wake_word.disable_model: stop_word_model
+
+            - micro_wake_word.enable_model: okay_nabu_model
+
+            - if:
+                condition:
+                  not:
+                    micro_wake_word.is_running:
+
+                then:
+                  - micro_wake_word.start:
+
+
+  # ----------------------------------------------------------
+  # Wake-Word-Erkennung komplett stoppen
+  # ----------------------------------------------------------
+
+  - id: stop_wake_word
+    mode: restart
+
+    then:
+
+      - if:
+          condition:
+            micro_wake_word.is_running:
+
+          then:
+            - micro_wake_word.stop:
+
+
+  # ----------------------------------------------------------
+  # Während längerer TTS-Ausgabe:
+  #
+  # 1 Sekunde warten.
+  # Falls Nabu dann noch spricht:
+  #   Okay Nabu AUS
+  #   Stop EIN
+  #   Wake-Word-Erkennung starten
+  #
+  # Nach Ende der Ansage:
+  #   Stop AUS
+  #   Okay Nabu EIN
+  # ----------------------------------------------------------
+
+  - id: activate_stop_word_once
+    mode: restart
+
+    then:
+
+      - wait_until:
+          condition:
+            media_player.is_announcing: voice_satellite_media_player
+
+          timeout: 5s
+
+
+      # Bei sehr kurzen Antworten lohnt sich die Stop-Erkennung nicht.
+      - delay: 1s
+
+
+      - if:
+          condition:
+            media_player.is_announcing: voice_satellite_media_player
+
+          then:
+
+            - micro_wake_word.disable_model: okay_nabu_model
+
+            - micro_wake_word.enable_model: stop_word_model
+
+
+            # Nach "Okay Nabu" wurde microWakeWord automatisch beendet.
+            # Für "Stop" während der Antwort starten wir es erneut.
+            - if:
+                condition:
+                  not:
+                    micro_wake_word.is_running:
+
+                then:
+                  - micro_wake_word.start:
+
+
+            # Warten, bis die Ansage normal endet oder durch "Stop"
+            # beendet wird.
+            - wait_until:
+                condition:
+                  not:
+                    media_player.is_announcing: voice_satellite_media_player
+
+
+            # Zurück zum normalen Wake Word.
+            - micro_wake_word.disable_model: stop_word_model
+
+            - micro_wake_word.enable_model: okay_nabu_model
+
+
+# ============================================================
+# MEDIA PLAYER
+#
+# media_pipeline        = Musik / Music Assistant
+# announcement_pipeline = Nabu / TTS
+# ============================================================
+
+media_player:
+
+  - platform: speaker
+    name: "Voice Satellite Speaker"
+    id: voice_satellite_media_player
+
+    volume_initial: 70%
+    volume_min: 0%
+    volume_max: 100%
+
+
+    # --------------------------------------------------------
+    # Musik
+    # --------------------------------------------------------
+
+    media_pipeline:
+      speaker: va_media_resampler
+      format: FLAC
+      sample_rate: 48000
+      num_channels: 1
+
+
+    # --------------------------------------------------------
+    # Nabu / TTS
+    # --------------------------------------------------------
+
+    announcement_pipeline:
+      speaker: va_announcement_resampler
+      format: FLAC
+      sample_rate: 48000
+      num_channels: 1
+
+
+    # --------------------------------------------------------
+    # Bei längerer Sprachausgabe "Stop" aktivieren.
+    #
+    # WICHTIG:
+    # Hier wird microWakeWord NICHT mehr komplett gestoppt.
+    # --------------------------------------------------------
+
+    on_announcement:
+
+      - script.execute: activate_stop_word_once
+
+
+    # --------------------------------------------------------
+    # Nach Ende wieder normalen Wake-Word-Modus herstellen.
+    # --------------------------------------------------------
+
+    on_idle:
+
+      - delay: 250ms
+
+      - if:
+          condition:
+            not:
+              voice_assistant.is_running:
+
+          then:
+            - script.execute: start_wake_word
+
+
+# ============================================================
+# LOKALE WAKE WORDS
+#
+# Normal:
+#   Okay Nabu
+#
+# Während langer TTS-Ausgabe:
+#   Stop
+# ============================================================
+
+micro_wake_word:
+
+  id: wake_word_engine
+
+  microphone:
+    microphone: va_mic
+    bits_per_sample: 16
+    gain_factor: 4
+
+  models:
+
+    - model: models/okay_nabu/okay_nabu.esphome.json
+      id: okay_nabu_model
+
+    - model: https://github.com/kahrendt/microWakeWord/releases/download/stop/stop.json
+      id: stop_word_model
+      internal: true
+
+
+  on_wake_word_detected:
+
+    # --------------------------------------------------------
+    # Wenn gerade eine Ansage läuft, kann nur das Stop-Modell
+    # aktiv sein. Dann TTS sofort abbrechen.
+    # --------------------------------------------------------
+
+    - if:
+        condition:
+          media_player.is_announcing: voice_satellite_media_player
+
+        then:
+
+          - media_player.stop:
+              id: voice_satellite_media_player
+              announcement: true
+
+          - voice_assistant.stop:
+
+          - micro_wake_word.disable_model: stop_word_model
+
+          - micro_wake_word.enable_model: okay_nabu_model
+
+
+        # ----------------------------------------------------
+        # Sonst war es das normale "Okay Nabu".
+        # ----------------------------------------------------
+
+        else:
+
+          - voice_assistant.start:
+              wake_word: !lambda return wake_word;
+
+
+# ============================================================
+# VOICE ASSISTANT
+# ============================================================
+
+voice_assistant:
+
+  id: va
+
+  microphone:
+    microphone: va_mic
+    bits_per_sample: 16
+    gain_factor: 1
+
+  media_player: voice_satellite_media_player
+
+  micro_wake_word: wake_word_engine
+
+  noise_suppression_level: 0
+  auto_gain: 0dBFS
+  volume_multiplier: 1.0
+
+
+  # ----------------------------------------------------------
+  # Home Assistant verbunden
+  # ----------------------------------------------------------
+
+  on_client_connected:
+
+    - delay: 2s
+
+    - script.execute: start_wake_word
+
+
+  # ----------------------------------------------------------
+  # Home Assistant getrennt
+  # ----------------------------------------------------------
+
+  on_client_disconnected:
+
+    - script.stop: activate_stop_word_once
+
+    - script.execute: stop_wake_word
+
+
+  # ----------------------------------------------------------
+  # Voice Assistant beendet
+  # ----------------------------------------------------------
+
+  on_end:
+
+    - wait_until:
+        condition:
+          media_player.is_announcing: voice_satellite_media_player
+
+        timeout: 500ms
+
+
+    - wait_until:
+        condition:
+          not:
+            media_player.is_announcing: voice_satellite_media_player
+
+        timeout: 15s
+
+
+    - delay: 250ms
+
+    - script.execute: start_wake_word
+
+
+  # ----------------------------------------------------------
+  # Fehler
+  # ----------------------------------------------------------
+
+  on_error:
+
+    - script.stop: activate_stop_word_once
+
+    - micro_wake_word.disable_model: stop_word_model
+
+    - micro_wake_word.enable_model: okay_nabu_model
+
+    - delay: 500ms
+
+    - script.execute: start_wake_word
+
+
+# ============================================================
+# WAKE-WORD-WATCHDOG
+# ============================================================
+
+interval:
+
+  - interval: 30s
+
+    then:
+
+      - if:
+          condition:
+            and:
+
+              - not:
+                  media_player.is_announcing: voice_satellite_media_player
+
+              - not:
+                  voice_assistant.is_running:
+
+              - not:
+                  micro_wake_word.is_running:
+
+          then:
+            - script.execute: start_wake_word
+
+
+# ============================================================
+# MANUELLER TESTKNOPF
+# ============================================================
+
+button:
+
+  - platform: template
+    name: "Voice Assistant Test"
+    icon: "mdi:microphone"
+
+    on_press:
+
+      - script.execute: stop_wake_word
+
+      - delay: 300ms
+
+      - voice_assistant.start:
+
